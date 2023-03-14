@@ -1,0 +1,4 @@
+Table cars {
+    name,
+    description
+}
