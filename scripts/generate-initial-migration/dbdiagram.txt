@@ -1,4 +1,14 @@
-Table cars {
+Table Car {
+    name string,
+    description text,
+    brand string,
+    plate integer
+}
+
+
+Table Brand {
     name string,
     description text
 }
+
+References Car.brand > Brand.name

@@ -1,0 +1,23 @@
+Table Doctor {
+    id uuid,
+    name string,
+    description text,
+    brand string,
+    plate integer
+}
+
+Table Appointment {
+    id uuid,
+    patient_id uuid,
+    doctor_id uuid,
+    scheduled_at datetime
+}
+
+Table Patient {
+    id uuid,
+    name string,
+    description text
+}
+
+References Appointment.patient_id > Patient.id
+References Appointment.doctor_id > Doctor.id
