@@ -129,7 +129,7 @@ class ObjToMigrationStr:
         return f"t.{field_type} :{field_name.lower()}"
 
     def create_table(self, table_name):
-        newl = '\n\t\t\t'
+        newl = '\n            '
         content = f"""
         create_table :{table_name.lower()} do |t|
             {newl.join(map(lambda field_name: self.create_field(field_name, self.schema_obj["TABLES"][table_name][field_name]["type"]), self.schema_obj["TABLES"][table_name].keys()))}
@@ -153,11 +153,11 @@ class ObjToMigrationStr:
         fk_content = f"""add_foreign_key :{reference['references_first_table'].lower()}, :{reference['references_second_table'].lower()}, column: :{reference['references_first_column']}, primary_key: :{reference['references_second_column']}"""
         index_content = f"add_index :{reference['references_first_table'].lower()}, :{reference['references_second_table'].lower()}"
 
-        return '\n\t\t'.join([fk_content, index_content])
+        return '\n        '.join([fk_content, index_content])
 
     def write_migration_to_file(self, filename):
         newl = '\n'
-        newl_w_tab = '\n\n\t\t'
+        newl_w_tab = '\n\n        '
         content = f"""class GenerateInitialSchemaFromDBDiagram < ActiveRecord::Migration[6.1]
     def change{newl.join(map(self.create_table, self.schema_obj["TABLES"].keys()))}
 
@@ -175,14 +175,14 @@ end
             self.write_model_to_file(dirname + f"/{model_name}.rb", model_name)
     
     def write_model_to_file(self, filename, model_name):
-        newl = '\n'
-        newl_w_tab = '\n\n\t\t'
+        # newl = '\n'
+        # newl_w_tab = '\n\n        '
 #         references_relationship
 # references_second_table
 # references_second_column
-        has_one = filter(
-            lambda relation: (model_name, "-") == (relation["references_first_table"],relation["references_relationship"]),
-            self.schema_obj["RELATIONSHIPS"])
+        # has_one = filter(
+        #     lambda relation: (model_name, "-") == (relation["references_first_table"],relation["references_relationship"]),
+        #     self.schema_obj["RELATIONSHIPS"])
         content = f"""class {model_name} < ApplicationRecord
 end
 """
